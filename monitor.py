@@ -151,13 +151,13 @@ while True:
     for i in range(len(scores)):
         if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
             label = '%s: %d%%' % (labels[int(classes[i])], int(scores[i]*100))
-            publish.single('detected', label)
+            publish.single('detected', label, hostname="192.168.0.45")
 
     # Calculate framerate
     t2 = cv2.getTickCount()
     time1 = (t2-t1)/freq
     frame_rate_calc= 1/time1
-    publish.single('fps', frame_rate_calc)
+    publish.single('fps', frame_rate_calc, hostname="192.168.0.45")
 
 
 videostream.stop()
