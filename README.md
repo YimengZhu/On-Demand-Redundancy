@@ -6,7 +6,7 @@ python3 monitor.py
 
 ### containerize
 build docker image:
-'docker build 
+`docker build -t yimengzhu/edgemonitor:v1 .`
 
 start the docker:
 `docker run --network host -it edgemonitor:v1`
