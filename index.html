@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>mqtt-demo: A simple web application that can subscribe to topics from an MQTT broker over websockets</title>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+      <script type="text/javascript">
+        function startConnect() {
+            clientID = "clientID-" + parseInt(Math.random() * 100);
+
+            host = document.getElementById("host").value;
+            port = document.getElementById("port").value;
+
+            document.getElementById("messages").innerHTML += '<span>Connecting to: ' + host + ' on port: ' + port + '</span><br/>';
+            document.getElementById("messages").innerHTML += '<span>Using the following client value: ' + clientID + '</span><br/>';
+
+            client = new Paho.MQTT.Client(host, Number(port), clientID);
+
+            client.onConnectionLost = onConnectionLost;
+            client.onMessageArrived = onMessageArrived;
+
+            client.connect({ 
+                onSuccess: onConnect,
+            });
+        }
+
+        function onConnect() {
+            client.subscribe('detected');
+            client.subscribe('fps');
+            document.getElementById("messages").innerHTML += 'connected to mqtt broker successfully.'
+        }
+
+        function onConnectionLost(responseObject) {
+            document.getElementById("messages").innerHTML += '<span>ERROR: Connection lost</span><br/>';
+            if (responseObject.errorCode !== 0) {
+                document.getElementById("messages").innerHTML += '<span>ERROR: ' + + responseObject.errorMessage + '</span><br/>';
+            }
+        }
+
+        function onMessageArrived(message) {
+            console.log("onMessageArrived: " + message.payloadString);
+            document.getElementById(message.destinationName).value = message.payloadString;
+        }
+
+        function startDisconnect() {
+            client.disconnect();
+            document.getElementById("messages").innerHTML += '<span>Disconnected</span><br/>';
+        }
+      </script>
+    </head>
+    <body>
+        <div class="wrapper">
+                <h1>Monitor Statistic</h1>
+                <form id="connection-information-form">
+                <b>Hostname or IP Address:</b> 
+                <input id="host" type="text" name="host" value="192.168.0.45"><br>
+                <b>Port:</b>
+                <input id="port" type="text" name="port" value="1884"><br>
+                <b>Detected:</b>
+                <input id="detected" type="text" name="detected" value="no value"><br>
+                <b>FPS:</b>
+                <input id="fps" type="text" name="fps" value="no value"><br><br>
+                <input type="button" onclick="startConnect()" value="Connect">
+                <input type="button" onclick="startDisconnect()" value="Disconnect">
+            </form>
+        <div id="messages"></div>
+        </div>
+        <iframe src="http://192.168.0.45:8081" height="480" width="640"></iframe>
+    </body>
+</html>
