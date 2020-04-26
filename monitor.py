@@ -57,7 +57,15 @@ LABELMAP_NAME = 'labelmap.txt'
 min_conf_threshold = 0.5
 resW, resH = 640, 480
 imW, imH = int(resW), int(resH)
-use_TPU = False
+use_TPU = True
+
+from edgetpu.basic.basic_engine import BasicEngine
+try:
+    BasicEngine('Sample_TFLite_model/edgetpu.tflite')
+except RuntimeError:
+    use_TPU = False
+
+device = 'TPU' if use_TPU else 'CPU'
 
 from tflite_runtime.interpreter import Interpreter
 if use_TPU:
@@ -93,7 +101,6 @@ if labels[0] == '???':
 if use_TPU:
     interpreter = Interpreter(model_path=PATH_TO_CKPT,
                               experimental_delegates=[load_delegate('libedgetpu.so.1.0')])
-    print(PATH_TO_CKPT)
 else:
     interpreter = Interpreter(model_path=PATH_TO_CKPT)
 
@@ -157,7 +164,7 @@ while True:
     t2 = cv2.getTickCount()
     time1 = (t2-t1)/freq
     frame_rate_calc= 1/time1
-    publish.single('fps', frame_rate_calc, hostname="192.168.0.45")
+    publish.single('fps', '{} with {}'.format(str(frame_rate_calc), device), hostname="192.168.0.45")
 
 
 videostream.stop()
