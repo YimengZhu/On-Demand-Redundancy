@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edgemonitor
+  namespace: edgemonitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edgemonitor
+  template:
+    metadata:
+      labels:
+        app: edgemonitor
+    spec:
+      hostNetwork: true 
+      containers:
+      - name: edgemonitor
+        image: yimengzhu/edgemonitor:v1
+        imagePullPolicy: Always
