@@ -9,7 +9,7 @@
 `docker build -t yimengzhu/edgemonitor:v1 .`
 
 * start the docker:\
-`docker run --network host -it edgemonitor:v1`
+`docker run --network host -it -v /dev/bus/usb:/dev/bus/usb edgemonitor:v1`
 
 ## building cluster
 - On **master**

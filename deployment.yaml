@@ -18,3 +18,12 @@ spec:
       - name: edgemonitor
         image: yimengzhu/edgemonitor:v1
         imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /dev/bus/usb
+          name: dev-usb
+        securityContext:
+          privileged: true
+      volumes:
+      - name: dev-usb
+        hostPath:
+          path: /dev/bus/usb

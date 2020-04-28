@@ -22,4 +22,4 @@ RUN mv mobilenet_ssd_v2_coco_quant_postprocess_edgetpu.tflite Sample_TFLite_mode
 
 RUN pip3 install -r requirements.txt
 
-# CMD ["python3", "monitor.py"]
+CMD ["python3", "monitor.py"]
