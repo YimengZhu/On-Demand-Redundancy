@@ -12,6 +12,12 @@
 `docker run --network host -it -v /dev/bus/usb:/dev/bus/usb edgemonitor:v1`
 
 ## building cluster
+-Install k3s
+`curl -sfL https://github.com/rancher/k3s/releases/download/v1.18.8+k3s1/k3s-armhf -o /usr/local/bin/k3s
+`chmod 0755 /usr/local/bin/k3s
+
+`k3s server --kube-controller-manager-arg pod-eviction-timeout=1m
+
 - On **master**
 
     - install and start k3s:\

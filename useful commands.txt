@@ -1,0 +1,33 @@
+export K3S_URL="https://192.168.1.100:6443"
+export K3S_TOKEN="
+K1013c28a3c00fa2641dc6676f8221cbe969dd30e91cdc0127c6955e07a1a0dd568::server:b83dbdaeea9657703dfe7522155f7dce"
+sudo k3s agent --server ${K3S_URL} --token ${K3S_TOKEN}
+
+Push image to docker hub
+
+docker login 
+docker push image：tag
+
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+docker agent problem:
+uninstall and reinstall k3s
+https://rancher.com/docs/k3s/latest/en/installation/uninstall/
+
+https://www.rancher.co.jp/docs/k3s/latest/en/installation/
+
+curl -sfL https://github.com/rancher/k3s/releases/download/v1.18.8+k3s1/k3s-armhf -o /usr/local/bin/k3s
+chmod 0755 /usr/local/bin/k3s
+
+sudo k3s server --kube-controller-manager-arg pod-eviction-timeout=1m
+sudo systemctl status k3s
+sudo cat /var/lib/rancher/k3s/server/node-token
+
+/usr/local/bin/k3s-uninstall.sh
+
+/usr/local/bin/k3s-agent-uninstall.sh
+
+
+https://github.com/rancher/k3s/issues/1402
+
